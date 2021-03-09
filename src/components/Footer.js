@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Footer(props) {
   return (
     <footer className="footer">
@@ -6,13 +8,13 @@ function Footer(props) {
       </span>
       <ul className="filters">
         <li>
-          <a href="/">All</a>
+          <Link to="/">All</Link>
         </li>
         <li>
-          <a href="/active">Active</a>
+          <Link to="/active">Active</Link>
         </li>
         <li>
-          <a href="/completed">Completed</a>
+          <Link to="/completed">Completed</Link>
         </li>
       </ul>
       <button className="clear-completed">Clear completed</button>
