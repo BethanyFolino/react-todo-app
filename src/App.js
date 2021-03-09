@@ -4,11 +4,12 @@ import todosList from "./todos.json";
 import { Route } from "react-router-dom";
 
 import TodoList from "./components/TodoList";
+import TodoItem from "./components/TodoItem";
 import Footer from "./components/Footer";
 
-function App() {
+function App(props) {
   const [todos, setTodos] = useState(todosList);
-  const [userInputs, setUserInputs] = useState(todosList);
+  // const [userInputs, setUserInputs] = useState(todosList);
 
   return (
     <section className="todoapp">
@@ -23,9 +24,42 @@ function App() {
       </header>
       <TodoList todos={todos} />
       <Footer />
-      <Route path="/active"></Route>
-      <Route path="/completed"></Route>
-      <Route path="/"></Route>
+      <Route path="/active">
+        <ul>
+          {props.todos &&
+            props.todos
+              .filter((items) => items.completed === false)
+              .map((todo) => (
+                <TodoItem
+                  title={todo.title}
+                  completed={todo.completed}
+                  id={todo.id}
+                />
+              ))}
+        </ul>
+      </Route>
+      <Route path="/completed">
+        {props.todos &&
+          props.todos
+            .filter((items) => items.completed === true)
+            .map((todo) => (
+              <TodoItem
+                title={todo.title}
+                completed={todo.completed}
+                id={todo.id}
+              />
+            ))}
+      </Route>
+      <Route path="/">
+        {props.todos &&
+          props.todos.map((todo) => (
+            <TodoItem
+              title={todo.title}
+              completed={todo.completed}
+              id={todo.id}
+            />
+          ))}
+      </Route>
     </section>
   );
 }
