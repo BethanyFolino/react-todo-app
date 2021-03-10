@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 function Footer(props) {
   return (
@@ -8,13 +8,13 @@ function Footer(props) {
       </span>
       <ul className="filters">
         <li>
-          <Link to="/">All</Link>
+          <a href="/">All</a>
         </li>
         <li>
-          <Link to="/active">Active</Link>
+          <a href="/active">Active</a>
         </li>
         <li>
-          <Link to="/completed">Completed</Link>
+          <a href="/completed">Completed</a>
         </li>
       </ul>
       <button className="clear-completed">Clear completed</button>

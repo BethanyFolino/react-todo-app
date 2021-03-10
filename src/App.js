@@ -1,22 +1,44 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import todosList from "./todos.json";
-import { Route } from "react-router-dom";
+// import { Route } from "react-router-dom";
 
 import TodoList from "./components/TodoList";
-import TodoItem from "./components/TodoItem";
+// import TodoItem from "./components/TodoItem";
 import Footer from "./components/Footer";
 
 function App(props) {
   const [todos, setTodos] = useState(todosList);
-  // const [userInputs, setUserInputs] = useState(todosList);
+  const [userInput, setUserInput] = useState("");
+
+  function handleTodos(e) {
+    if (e.keyCode === 13) {
+      console.log("You hit the enter key!");
+      setTodos([
+        ...todos,
+        { title: userInput, id: todos.length, completed: false },
+      ]);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleTodos);
+    return () => {
+      window.removeEventListener("keydown", handleTodos);
+    };
+  }, [userInput]);
+
+  function handleOnChange(e) {
+    const newTodo = e.target.value;
+    setUserInput(newTodo);
+  }
 
   return (
     <section className="todoapp">
       <header className="header">
         <h1>todos</h1>
         <input
-          // onChange={function that updates user's input in state}
+          onChange={(newTodo) => handleOnChange(newTodo)}
           className="new-todo"
           placeholder="What needs to be done?"
           autofocus
@@ -24,7 +46,7 @@ function App(props) {
       </header>
       <TodoList todos={todos} />
       <Footer />
-      <Route path="/active">
+      {/* <Route path="/active">
         <ul>
           {props.todos &&
             props.todos
@@ -59,7 +81,7 @@ function App(props) {
               id={todo.id}
             />
           ))}
-      </Route>
+      </Route> */}
     </section>
   );
 }
