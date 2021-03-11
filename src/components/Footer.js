@@ -4,7 +4,7 @@ function Footer(props) {
   return (
     <footer className="footer">
       <span className="todo-count">
-        <strong>0</strong> item(s) left
+        <strong>{props.todoCount}</strong> item(s) left
       </span>
       <ul className="filters">
         <li>
