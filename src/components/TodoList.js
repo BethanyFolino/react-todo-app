@@ -11,6 +11,7 @@ function TodoList(props) {
             id={todo.id}
             toggleComplete={props.toggleComplete}
             deleteTodo={props.deleteTodo}
+            clearCompleted={props.clearCompleted}
           />
         ))}
       </ul>

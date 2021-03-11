@@ -52,28 +52,27 @@ function App(props) {
     setTodos([...changeTodos]);
   }
   function toggleComplete(event, todoId) {
-    let changeTodos = [...todos];
-    let changeTodo = changeTodos.find((todo) => todo.id === todoId);
-    changeTodo.completed = !changeTodo.completed;
-    setTodos([...changeTodo]);
+    // let changeTodos = [...todos];
+    // let changeTodo = changeTodos.find((todo) => todo.id === todoId);
+    // changeTodo.completed = !changeTodo.completed;
+    // setTodos([...changeTodos]);
+    console.log("You clicked me!");
+    setTodos((todos) => {
+      return todos.map((todo) => {
+        if (todo.id === todoId) {
+          let toggleFeature = {
+            ...todo,
+          };
+          toggleFeature.completed = !toggleFeature.completed;
+          return toggleFeature;
+        }
+        return todo;
+      });
+    });
   }
-  function clearCompleted(event) {
+  function clearCompleted() {
     setTodos(todos.filter((todo) => !todo.completed));
   }
-
-  // console.log("You clicked me!")
-  // setTodos((todos) =>{
-  //   return todos.map((todo) => {
-  //     if (todo.id == todoId) {
-  //       let toggleFeature = {
-  //         ...todo,
-  //       };
-  //       toggleFeature.completed = !toggleFeature.completed;
-  //       return toggleFeature;
-  //     }
-  //     return todo;
-  //   })
-  // })
 
   return (
     <section className="todoapp">
@@ -92,13 +91,26 @@ function App(props) {
       <Switch>
         <Route
           exact
-          path="/:filter"
+          path="/active"
           render={(props) => (
             <TodoList
               {...props}
-              todos={todos}
+              todos={todos.filter((todo) => !todo.completed)}
               toggleComplete={toggleComplete}
               deleteTodo={deleteTodo}
+              clearCompleted={clearCompleted}
+            />
+          )}
+        />
+        <Route
+          path="/completed"
+          render={(props) => (
+            <TodoList
+              {...props}
+              todos={todos.filter((todo) => todo.completed)}
+              toggleComplete={toggleComplete}
+              deleteTodo={deleteTodo}
+              clearCompleted={clearCompleted}
             />
           )}
         />
@@ -111,17 +123,6 @@ function App(props) {
               toggleComplete={toggleComplete}
               deleteTodo={deleteTodo}
               clearCompleted={clearCompleted}
-            />
-          )}
-        />
-        <Route
-          path="/completed"
-          render={(props) => (
-            <TodoList
-              {...props}
-              todos={todos.filter((todo) => todos.completed)}
-              toggleComplete={toggleComplete}
-              deleteTodo={deleteTodo}
             />
           )}
         />
