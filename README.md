@@ -100,4 +100,4 @@ Deleting a Todo:
 
 Author: Bethany Folino
 
-References: Help from DeQuan Mitchell, John Anderson; https://stackoverflow.com/questions/38457153/enter-keypress-is-not-detected-on-keypress-function
+References: Help from DeQuan Mitchell, John Anderson, Elly Hall, Billy Yip, Craig Powell, Laura Hatch, Hossain Ahmed; https://stackoverflow.com/questions/38457153/enter-keypress-is-not-detected-on-keypress-function, https://reactjs.org/docs/context.html
