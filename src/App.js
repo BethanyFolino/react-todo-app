@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import todosList from "./todos.json";
-// import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router";
 
 import TodoList from "./components/TodoList";
 // import TodoItem from "./components/TodoItem";
@@ -10,28 +10,70 @@ import Footer from "./components/Footer";
 function App(props) {
   const [todos, setTodos] = useState(todosList);
   const [userInput, setUserInput] = useState("");
-
-  function handleTodos(e) {
-    if (e.keyCode === 13) {
-      console.log("You hit the enter key!");
-      setTodos([
-        ...todos,
-        { title: userInput, id: todos.length, completed: false },
-      ]);
-    }
-  }
+  // const [filter, setFilter] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("keydown", handleTodos);
-    return () => {
-      window.removeEventListener("keydown", handleTodos);
+    const handleKey = (event) => {
+      if (userInput && event.key === "Enter") {
+        let newTodo = {
+          id: todos.length ? todos[todos.length - 1].id + 1 : 1,
+          title: userInput,
+          completed: false,
+        };
+        setTodos((todos) => [...todos, newTodo]);
+        setUserInput(() => "");
+      }
     };
-  }, [userInput]);
+    window.addEventListener("keydown", handleKey);
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+    };
+  });
 
   function handleOnChange(e) {
     const newTodo = e.target.value;
     setUserInput(newTodo);
   }
+
+  useEffect(() => {
+    window.addEventListener("click", toggleComplete);
+    return () => {
+      window.removeEventListener("click", toggleComplete);
+    };
+  });
+
+  function deleteTodo(event, todoId) {
+    let changeTodos = [...todos];
+    changeTodos.splice(
+      changeTodos.findIndex((todo) => todo.id === todoId),
+      1
+    );
+
+    setTodos([...changeTodos]);
+  }
+  function toggleComplete(event, todoId) {
+    let changeTodos = [...todos];
+    let changeTodo = changeTodos.find((todo) => todo.id === todoId);
+    changeTodo.completed = !changeTodo.completed;
+    setTodos([...changeTodo]);
+  }
+  function clearCompleted(event) {
+    setTodos(todos.filter((todo) => !todo.completed));
+  }
+
+  // console.log("You clicked me!")
+  // setTodos((todos) =>{
+  //   return todos.map((todo) => {
+  //     if (todo.id == todoId) {
+  //       let toggleFeature = {
+  //         ...todo,
+  //       };
+  //       toggleFeature.completed = !toggleFeature.completed;
+  //       return toggleFeature;
+  //     }
+  //     return todo;
+  //   })
+  // })
 
   return (
     <section className="todoapp">
@@ -41,47 +83,53 @@ function App(props) {
           onChange={(newTodo) => handleOnChange(newTodo)}
           className="new-todo"
           placeholder="What needs to be done?"
+          value={userInput}
+          onChange={(event) => setUserInput(event.target.value)}
           autofocus
         />
       </header>
-      <TodoList todos={todos} />
-      <Footer />
-      {/* <Route path="/active">
-        <ul>
-          {props.todos &&
-            props.todos
-              .filter((items) => items.completed === false)
-              .map((todo) => (
-                <TodoItem
-                  title={todo.title}
-                  completed={todo.completed}
-                  id={todo.id}
-                />
-              ))}
-        </ul>
-      </Route>
-      <Route path="/completed">
-        {props.todos &&
-          props.todos
-            .filter((items) => items.completed === true)
-            .map((todo) => (
-              <TodoItem
-                title={todo.title}
-                completed={todo.completed}
-                id={todo.id}
-              />
-            ))}
-      </Route>
-      <Route path="/">
-        {props.todos &&
-          props.todos.map((todo) => (
-            <TodoItem
-              title={todo.title}
-              completed={todo.completed}
-              id={todo.id}
+
+      <Switch>
+        <Route
+          exact
+          path="/:filter"
+          render={(props) => (
+            <TodoList
+              {...props}
+              todos={todos}
+              toggleComplete={toggleComplete}
+              deleteTodo={deleteTodo}
             />
-          ))}
-      </Route> */}
+          )}
+        />
+        <Route
+          path="/"
+          render={(props) => (
+            <TodoList
+              {...props}
+              todos={todos}
+              toggleComplete={toggleComplete}
+              deleteTodo={deleteTodo}
+              clearCompleted={clearCompleted}
+            />
+          )}
+        />
+        <Route
+          path="/completed"
+          render={(props) => (
+            <TodoList
+              {...props}
+              todos={todos.filter((todo) => todos.completed)}
+              toggleComplete={toggleComplete}
+              deleteTodo={deleteTodo}
+            />
+          )}
+        />
+      </Switch>
+      <Footer
+        todoCount={todos.filter((todo) => !todo.completed).length}
+        clearCompleted={clearCompleted}
+      />
     </section>
   );
 }
