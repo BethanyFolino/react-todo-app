@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
-function Footer(props) {
+function Footer() {
   return (
     <footer className="footer">
       <span className="todo-count">
-        <strong>{props.todoCount}</strong> item(s) left
+        <strong>{todoCount}</strong> item(s) left
       </span>
       <ul className="filters">
         <li>
@@ -19,7 +19,7 @@ function Footer(props) {
       </ul>
       <button
         className="clear-completed"
-        onClick={(event) => props.clearCompleted(event)}
+        onClick={(event) => clearCompleted(event)}
       >
         Clear completed
       </button>
