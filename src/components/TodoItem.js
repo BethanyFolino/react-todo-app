@@ -1,16 +1,16 @@
-function TodoItem(props) {
+function TodoItem() {
   return (
-    <li className={props.completed ? "completed" : ""}>
+    <li className={todo.completed ? "completed" : ""}>
       <div className="view">
         <input
           className="toggle"
           type="checkbox"
-          checked={props.completed}
-          onChange={(event) => props.toggleComplete(event, props.id)}
+          checked={todo.completed}
+          onChange={(event) => toggleComplete(event, id)}
         />
-        <label>{props.title}</label>
+        <label>{todo.title}</label>
         <button
-          onClick={(event) => props.deleteTodo(event, props.id)}
+          onClick={(event) => deleteTodo(event, id)}
           className="destroy"
         />
       </div>

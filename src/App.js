@@ -6,17 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
+import todosReducer from "./revisited/TodosReducer";
+import toggleComplete from "./revisited/ToggleComplete";
+import deleteTodo from "./revisited/DeleteTodo";
 
-// function reducer(state, action) {   *use as if/else in return
-//   switch (action.type) {
-//     case "SHOW_ALL":
-//       return "ALL";
-//     case "SHOW_ACTIVE":
-//       return "ACTIVE";
-//     case "SHOW_COMPLETED":
-//       return "COMPLETED";
-//   }
-// }
 //App
 //1. Create context
 //2. Initialize useReducer, pass in todos reducer
@@ -38,13 +31,21 @@ import Footer from "./components/Footer";
 const App = () => {
   // const [todos, setTodos] = useState(todosList);
   // const [userInput, setUserInput] = useState("");
-  const [todos, dispatch] = useReducer(dispatch, "ALL");
+  const { ALL, ACTIVE, COMPLETED } = todosReducer;
+
+  const initialState = {
+    title: todo.title,
+    id: todo.id,
+    completed: todo.completed,
+  };
+
+  const [todos, dispatch] = useReducer(todosReducer, initialState);
 
   useEffect(() => {
     const handleKey = (event) => {
-      if (userInput && event.key === "Enter") {
-        setTodos((todos) => [...todos, newTodo]);
-        setUserInput(() => "");
+      if (initialState && event.key === "Enter") {
+        (todos) => [...todos, newTodo]; //how does this work with useReducer?
+        () => "";
       }
     };
     window.addEventListener("keydown", handleKey);
@@ -54,20 +55,25 @@ const App = () => {
   });
 
   const handleOnChange = (e) => {
-    let inputText = setTodos;
-    inputText = e.target.value;
-    setTodos(inputText);
+    // let inputText = setTodos;
+    // inputText = e.target.value;
+    // setTodos(inputText);
+    e.preventDefault();
+    dispatch({
+      type: "newTodo",
+      payload: addNewTodo(title, id, completed),
+    });
   };
   const keyPress = (e) => {
     if (e.key === "Enter") {
       const todoText = uuidv4();
       const todo = {
-        title: userInput,
+        title: initialState,
         completed: false,
         id: todoText,
       };
-      setTodos((todos) => [...todos, todo]);
-      setUserInput("");
+      (todos) => [...todos, todo];
+      ("");
     }
   };
 
@@ -78,27 +84,6 @@ const App = () => {
     };
   });
 
-  const deleteTodo = (event, todoId) => {
-    setTodos((todos) => {
-      return todos.filter((todo) => {
-        return todo.id !== todoId;
-      });
-    });
-  };
-  const toggleComplete = (event, todoId) => {
-    setTodos((todos) => {
-      return todos.map((todo) => {
-        if (todo.id === todoId) {
-          let toggleFeature = {
-            ...todo,
-          };
-          toggleFeature.completed = !toggleFeature.completed;
-          return toggleFeature;
-        }
-        return todo;
-      });
-    });
-  };
   const clearCompleted = () => {
     dispatch((todos) => {
       return todos.filter((todo) => {
@@ -119,6 +104,17 @@ const App = () => {
           autofocus
         />
       </header>
+
+      {function reducer(state, action) {
+        switch (action.type) {
+          case "SHOW_ALL":
+            return "ALL";
+          case "SHOW_ACTIVE":
+            return "ACTIVE";
+          case "SHOW_COMPLETED":
+            return "COMPLETED";
+        }
+      }}
 
       <Switch>
         <Route exact path="/active">
