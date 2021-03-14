@@ -1,9 +1,9 @@
-import toggleComplete from "./ToggleComplete";
 import { v4 as uuidv4 } from "uuid";
 
 export const ADD_TODO = "ADD_TODO";
 export const DELETE_TODO = "DELETE_TODO";
 export const TOGGLE_COMPLETE = "TOGGLE_COMPLETE";
+export const CLEAR_COMPLETED = "CLEAR_COMPLETED";
 export const HANDLE_CHANGE = "HANDLE_CHANGE";
 
 export default function todosReducer(state, action) {
@@ -12,7 +12,7 @@ export default function todosReducer(state, action) {
       return {
         ...state,
         todos: state.todos.map((todo) => {
-          if (todo.id === todoId) {
+          if (todo.id === action) {
             let toggleFeature = {
               ...todo,
             };
@@ -27,7 +27,7 @@ export default function todosReducer(state, action) {
         ...state,
         todos: state.todos.map((todos) => {
           return todos.filter((todo) => {
-            return todo.id !== todoId;
+            return todo.id !== action;
           });
         }),
       };
@@ -37,6 +37,17 @@ export default function todosReducer(state, action) {
         todos: [
           ...state.todos.map,
           { id: uuidv4(), title: state.userInput, completed: false },
+        ],
+      };
+    case CLEAR_COMPLETED:
+      return {
+        ...state,
+        todos: [
+          ...state.todos.map((todos) => {
+            return todos.filter((todo) => {
+              return !todo.completed;
+            });
+          }),
         ],
       };
     case HANDLE_CHANGE:

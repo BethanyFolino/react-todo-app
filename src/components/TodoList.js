@@ -1,17 +1,23 @@
+import {
+  DELETE_TODO,
+  TOGGLE_COMPLETE,
+  CLEAR_COMPLETED,
+} from "../revisited/TodosReducer";
+import { v4 as uuidv4 } from "uuid";
 import TodoItem from "./TodoItem";
 
-function TodoList(props) {
+function TodoList(state) {
   return (
     <section className="main">
       <ul className="todo-list">
-        {props.todos.map((todo) => (
+        {state.todos.map((todo) => (
           <TodoItem
-            title={props.todo.title}
-            completed={props.todo.completed}
-            id={props.todo.id}
-            toggleComplete={props.toggleComplete}
-            deleteTodo={props.deleteTodo}
-            clearCompleted={props.clearCompleted}
+            title={state.userInput}
+            completed={state.completed}
+            id={uuidv4}
+            toggleComplete={TOGGLE_COMPLETE}
+            deleteTodo={DELETE_TODO}
+            clearCompleted={CLEAR_COMPLETED}
           />
         ))}
       </ul>
