@@ -100,4 +100,4 @@ Deleting a Todo:
 
 Author: Bethany Folino
 
-References: Help from Ruben Espino, Tianna McCoy, https://www.robinwieruch.de/react-state-usereducer-usestate-usecontext, https://dev.to/m0nica/refactoring-usestate-to-usereducer-2pn3
+References: Help from Ruben Espino, Tianna McCoy, Mia Peace; https://www.robinwieruch.de/react-state-usereducer-usestate-usecontext, https://dev.to/m0nica/refactoring-usestate-to-usereducer-2pn3
