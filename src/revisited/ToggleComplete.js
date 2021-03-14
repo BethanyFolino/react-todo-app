@@ -1,4 +1,4 @@
-const toggleComplete = (dispatch, todoId) => {
+export default function toggleComplete(dispatch, todoId) {
   dispatch((todos) => {
     return todos.map((todo) => {
       if (todo.id === todoId) {
@@ -11,4 +11,4 @@ const toggleComplete = (dispatch, todoId) => {
       return todo;
     });
   });
-};
+}

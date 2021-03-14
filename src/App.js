@@ -6,7 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
-import todosReducer from "./revisited/TodosReducer";
+import todosReducer, {
+  DELETE_TODO,
+  TOGGLE_COMPLETE,
+} from "./revisited/TodosReducer";
 import toggleComplete from "./revisited/ToggleComplete";
 import deleteTodo from "./revisited/DeleteTodo";
 
@@ -27,25 +30,22 @@ import deleteTodo from "./revisited/DeleteTodo";
 
 //Todo Item
 //1. Bring in dispatch and update onChange
+export const TodosDispatch = createContext(null);
 
 const App = () => {
   // const [todos, setTodos] = useState(todosList);
   // const [userInput, setUserInput] = useState("");
-  const { ALL, ACTIVE, COMPLETED } = todosReducer;
 
-  const initialState = {
-    title: todo.title,
-    id: todo.id,
-    completed: todo.completed,
-  };
-
-  const [todos, dispatch] = useReducer(todosReducer, initialState);
+  const [state, dispatch] = useReducer(reducer, {
+    todos: todosList,
+    userInput: "",
+  });
 
   useEffect(() => {
     const handleKey = (event) => {
-      if (initialState && event.key === "Enter") {
-        (todos) => [...todos, newTodo]; //how does this work with useReducer?
-        () => "";
+      if (event.key === "Enter") {
+        dispatch({ type: "ADD_TODO" });
+        dispatch({ type: "HANDLE_CHANGE" });
       }
     };
     window.addEventListener("keydown", handleKey);
@@ -61,14 +61,14 @@ const App = () => {
     e.preventDefault();
     dispatch({
       type: "newTodo",
-      payload: addNewTodo(title, id, completed),
+      payload: ADD_TODO(title, id, completed),
     });
   };
   const keyPress = (e) => {
     if (e.key === "Enter") {
       const todoText = uuidv4();
       const todo = {
-        title: initialState,
+        title: state,
         completed: false,
         id: todoText,
       };
@@ -91,7 +91,7 @@ const App = () => {
       });
     });
   };
-  <dispatch.provider>
+  <TodosDispatch.provider value={dispatch}>
     return (
     <section className="todoapp">
       <header className="header">
@@ -122,8 +122,8 @@ const App = () => {
             todos={todos.filter((item) => {
               return item.completed === false;
             })}
-            toggleComplete={toggleComplete}
-            deleteTodo={deleteTodo}
+            toggleComplete={TOGGLE_COMPLETE}
+            deleteTodo={DELETE_TODO}
           />
         </Route>
 
@@ -132,8 +132,8 @@ const App = () => {
             todos={todos.filter((item) => {
               return item.completed === true;
             })}
-            toggleComplete={toggleComplete}
-            deleteTodo={deleteTodo}
+            toggleComplete={TOGGLE_COMPLETE}
+            deleteTodo={DELETE_TODO}
           />
         </Route>
 
@@ -142,8 +142,8 @@ const App = () => {
           render={
             <TodoList
               todos={todos}
-              toggleComplete={toggleComplete}
-              deleteTodo={deleteTodo}
+              toggleComplete={TOGGLE_COMPLETE}
+              deleteTodo={DELETE_TODO}
               clearCompleted={clearCompleted}
             />
           }
@@ -151,8 +151,8 @@ const App = () => {
 
         <TodoList
           todos={todos}
-          toggleComplete={toggleComplete}
-          deleteTodo={deleteTodo}
+          toggleComplete={TOGGLE_COMPLETE}
+          deleteTodo={DELETE_TODO}
         />
       </Switch>
 
@@ -162,7 +162,7 @@ const App = () => {
       />
     </section>
     );
-  </dispatch.provider>;
+  </TodosDispatch.provider>;
 };
 
 export default App;

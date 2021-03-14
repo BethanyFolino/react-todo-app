@@ -6,9 +6,9 @@ function TodoList(props) {
       <ul className="todo-list">
         {props.todos.map((todo) => (
           <TodoItem
-            title={todo.title}
-            completed={todo.completed}
-            id={todo.id}
+            title={props.todo.title}
+            completed={props.todo.completed}
+            id={props.todo.id}
             toggleComplete={props.toggleComplete}
             deleteTodo={props.deleteTodo}
             clearCompleted={props.clearCompleted}

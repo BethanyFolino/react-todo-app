@@ -1,16 +1,20 @@
-function TodoItem() {
+import { useContext } from "react";
+import { TodosDispatch } from "../App";
+
+function TodoItem(props) {
+  const dispatch = useContext(TodosDispatch);
   return (
-    <li className={todo.completed ? "completed" : ""}>
+    <li className={props.completed ? "completed" : ""}>
       <div className="view">
         <input
           className="toggle"
           type="checkbox"
-          checked={todo.completed}
-          onChange={(event) => toggleComplete(event, id)}
+          checked={props.completed}
+          onChange={(event) => dispatch({ type: "TOGGLE_COMPLETE", event })}
         />
-        <label>{todo.title}</label>
+        <label>{props.todo.title}</label>
         <button
-          onClick={(event) => deleteTodo(event, id)}
+          onClick={(event) => dispatch({ type: "DELETE_TODO" })}
           className="destroy"
         />
       </div>
