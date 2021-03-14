@@ -98,7 +98,7 @@ const App = (props) => {
         <header className="header">
           <h1>todos</h1>
           <input
-            onChange={HANDLE_CHANGE}
+            onChange={(event) => dispatch({ type: HANDLE_CHANGE })}
             className="new-todo"
             placeholder="What needs to be done?"
             value={useReducer.userInput}
@@ -125,8 +125,8 @@ const App = (props) => {
               todos={state.todos.filter((item) => {
                 return item.completed === false;
               })}
-              toggleComplete={TOGGLE_COMPLETE}
-              deleteTodo={DELETE_TODO}
+              toggleComplete={(event) => dispatch({ type: TOGGLE_COMPLETE })}
+              deleteTodo={(event) => dispatch({ type: DELETE_TODO })}
             />
           </Route>
 
@@ -135,29 +135,29 @@ const App = (props) => {
               todos={state.todos.filter((item) => {
                 return item.completed === true;
               })}
-              toggleComplete={TOGGLE_COMPLETE}
-              deleteTodo={DELETE_TODO}
+              toggleComplete={(event) => dispatch({ type: TOGGLE_COMPLETE })}
+              deleteTodo={(event) => dispatch({ type: DELETE_TODO })}
             />
           </Route>
 
           <Route path="/">
             <TodoList
               todos={useReducer.userInput}
-              toggleComplete={TOGGLE_COMPLETE}
-              deleteTodo={DELETE_TODO}
-              clearCompleted={CLEAR_COMPLETED}
+              toggleComplete={(event) => dispatch({ type: TOGGLE_COMPLETE })}
+              deleteTodo={(event) => dispatch({ type: DELETE_TODO })}
+              clearCompleted={(event) => dispatch({ type: CLEAR_COMPLETED })}
             />
           </Route>
 
           <TodoList
             todos={useReducer.todos}
-            toggleComplete={TOGGLE_COMPLETE}
-            deleteTodo={DELETE_TODO}
+            toggleComplete={(event) => dispatch({ type: TOGGLE_COMPLETE })}
+            deleteTodo={(event) => dispatch({ type: DELETE_TODO })}
           />
         </Switch>
 
         <Footer
-          clearCompleted={CLEAR_COMPLETED}
+          clearCompleted={(event) => dispatch({ type: CLEAR_COMPLETED })}
           todoCount={state.todos.filter((todo) => !todo.completed).length}
         />
       </TodosDispatch.Provider>

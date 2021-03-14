@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
-import clearCompleted from "../App";
+import { CLEAR_COMPLETED } from "../revisited/TodosReducer";
+import { useContext } from "react";
+import { TodosDispatch } from "../App";
 
 function Footer(props) {
+  const dispatch = useContext(TodosDispatch);
   return (
     <footer className="footer">
       <span className="todo-count">
@@ -20,7 +23,7 @@ function Footer(props) {
       </ul>
       <button
         className="clear-completed"
-        onClick={(event) => clearCompleted(event)}
+        onClick={(event) => dispatch({ type: CLEAR_COMPLETED })}
       >
         Clear completed
       </button>
