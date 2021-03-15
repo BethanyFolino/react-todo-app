@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { CLEAR_COMPLETED } from "../revisited/TodosReducer";
 import { useContext } from "react";
 import { TodosDispatch } from "../App";
 
@@ -23,7 +22,7 @@ function Footer(props) {
       </ul>
       <button
         className="clear-completed"
-        onClick={(event) => dispatch({ type: CLEAR_COMPLETED })}
+        onClick={(event) => dispatch({ type: "CLEAR_COMPLETED" })}
       >
         Clear completed
       </button>

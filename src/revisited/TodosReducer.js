@@ -1,41 +1,34 @@
 import { v4 as uuidv4 } from "uuid";
 
-export const ADD_TODO = "ADD_TODO";
-export const DELETE_TODO = "DELETE_TODO";
-export const TOGGLE_COMPLETE = "TOGGLE_COMPLETE";
-export const CLEAR_COMPLETED = "CLEAR_COMPLETED";
-export const HANDLE_CHANGE = "HANDLE_CHANGE";
-
 export default function todosReducer(state, action) {
+  const ADD_TODO = "ADD_TODO";
+  const DELETE_TODO = "DELETE_TODO";
+  const TOGGLE_COMPLETE = "TOGGLE_COMPLETE";
+  const CLEAR_COMPLETED = "CLEAR_COMPLETED";
+  const HANDLE_CHANGE = "HANDLE_CHANGE";
   switch (action.type) {
     case TOGGLE_COMPLETE:
       return {
         ...state,
         todos: state.todos.map((todo) => {
-          if (todo.id === action) {
-            let toggleFeature = {
+          if (todo.id === action.todoId) {
+            return {
               ...todo,
+              completed: !todo.completed,
             };
-            toggleFeature.completed = !toggleFeature.completed;
-            return toggleFeature;
-          }
-          return todo;
+          } else return todo;
         }),
       };
     case DELETE_TODO:
       return {
         ...state,
-        todos: state.todos.map((todos) => {
-          return todos.filter((todo) => {
-            return todo.id !== action;
-          });
-        }),
+        todos: state.todos.filter((todo) => todo.id !== action.todoId),
       };
     case ADD_TODO:
       return {
         ...state,
         todos: [
-          ...state.todos.map,
+          ...state.todos,
           { id: uuidv4(), title: state.userInput, completed: false },
         ],
       };
@@ -43,10 +36,8 @@ export default function todosReducer(state, action) {
       return {
         ...state,
         todos: [
-          ...state.todos.map((todos) => {
-            return todos.filter((todo) => {
-              return !todo.completed;
-            });
+          ...state.todos.filter((todo) => {
+            return !todo.completed;
           }),
         ],
       };

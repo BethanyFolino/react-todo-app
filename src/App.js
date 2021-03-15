@@ -2,17 +2,11 @@ import "./App.css";
 import { useEffect, useReducer, createContext } from "react";
 import todosList from "./todos.json";
 import { Route, Switch } from "react-router";
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
-import todosReducer, {
-  ADD_TODO,
-  DELETE_TODO,
-  TOGGLE_COMPLETE,
-  CLEAR_COMPLETED,
-  HANDLE_CHANGE,
-} from "./revisited/TodosReducer";
+import todosReducer from "./revisited/TodosReducer";
 
 //App
 //1. Create context
@@ -43,17 +37,18 @@ const App = (props) => {
   });
 
   useEffect(() => {
-    const handleKey = (event) => {
-      if (event.key === "Enter") {
-        dispatch({ type: ADD_TODO });
-        dispatch({ type: HANDLE_CHANGE });
-      }
-    };
     window.addEventListener("keydown", handleKey);
     return () => {
       window.removeEventListener("keydown", handleKey);
     };
   });
+
+  const handleKey = (event) => {
+    if (event.key === "Enter") {
+      dispatch({ type: "ADD_TODO" });
+      dispatch({ type: "HANDLE_CHANGE", text: "" });
+    }
+  };
 
   // const handleOnChange = (e) => {
   //   // let inputText = setTodos;
@@ -65,25 +60,6 @@ const App = (props) => {
   //   });
   //   dispatch({ type: HANDLE_CHANGE });
   // };
-  const keyPress = (e) => {
-    if (e.key === "Enter") {
-      // const todoText = uuidv4();
-      // const todo = {
-      //   title: state,
-      //   completed: false,
-      //   id: todoText,
-      // };
-      dispatch({ type: ADD_TODO });
-      dispatch({ type: HANDLE_CHANGE, text: "" });
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("keydown", keyPress);
-    return () => {
-      window.removeEventListener("keydown", keyPress);
-    };
-  });
 
   // const clearCompleted = () => {
   //   dispatch((todos) => {
@@ -98,15 +74,17 @@ const App = (props) => {
         <header className="header">
           <h1>todos</h1>
           <input
-            onChange={(event) => dispatch({ type: HANDLE_CHANGE })}
+            onChange={(event) =>
+              dispatch({ type: "HANDLE_CHANGE", text: event.target.value })
+            }
             className="new-todo"
             placeholder="What needs to be done?"
-            value={useReducer.userInput}
-            autofocus
+            value={state.userInput}
+            autoFocus
           />
         </header>
 
-        {function reducer(state, action) {
+        {/* {function reducer(state, action) {
           switch (action.type) {
             case "SHOW_ALL":
               return "ALL";
@@ -117,7 +95,7 @@ const App = (props) => {
             default:
               throw new Error();
           }
-        }}
+        }} */}
 
         <Switch>
           <Route exact path="/active">
@@ -125,8 +103,8 @@ const App = (props) => {
               todos={state.todos.filter((item) => {
                 return item.completed === false;
               })}
-              toggleComplete={(event) => dispatch({ type: TOGGLE_COMPLETE })}
-              deleteTodo={(event) => dispatch({ type: DELETE_TODO })}
+              toggleComplete={(event) => dispatch({ type: "TOGGLE_COMPLETE" })}
+              deleteTodo={(event) => dispatch({ type: "DELETE_TODO" })}
             />
           </Route>
 
@@ -135,29 +113,29 @@ const App = (props) => {
               todos={state.todos.filter((item) => {
                 return item.completed === true;
               })}
-              toggleComplete={(event) => dispatch({ type: TOGGLE_COMPLETE })}
-              deleteTodo={(event) => dispatch({ type: DELETE_TODO })}
+              toggleComplete={(event) => dispatch({ type: "TOGGLE_COMPLETE" })}
+              deleteTodo={(event) => dispatch({ type: "DELETE_TODO" })}
             />
           </Route>
 
           <Route path="/">
             <TodoList
-              todos={useReducer.userInput}
-              toggleComplete={(event) => dispatch({ type: TOGGLE_COMPLETE })}
-              deleteTodo={(event) => dispatch({ type: DELETE_TODO })}
-              clearCompleted={(event) => dispatch({ type: CLEAR_COMPLETED })}
+              todos={state.todos}
+              toggleComplete={(event) => dispatch({ type: "TOGGLE_COMPLETE" })}
+              deleteTodo={(event) => dispatch({ type: "DELETE_TODO" })}
+              clearCompleted={(event) => dispatch({ type: "CLEAR_COMPLETED" })}
             />
           </Route>
 
           <TodoList
-            todos={useReducer.todos}
-            toggleComplete={(event) => dispatch({ type: TOGGLE_COMPLETE })}
-            deleteTodo={(event) => dispatch({ type: DELETE_TODO })}
+            todos={state.todos}
+            toggleComplete={(event) => dispatch({ type: "TOGGLE_COMPLETE" })}
+            deleteTodo={(event) => dispatch({ type: "DELETE_TODO" })}
           />
         </Switch>
 
         <Footer
-          clearCompleted={(event) => dispatch({ type: CLEAR_COMPLETED })}
+          clearCompleted={(event) => dispatch({ type: "CLEAR_COMPLETED" })}
           todoCount={state.todos.filter((todo) => !todo.completed).length}
         />
       </TodosDispatch.Provider>

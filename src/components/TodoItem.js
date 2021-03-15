@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { TodosDispatch } from "../App";
-import { DELETE_TODO, TOGGLE_COMPLETE } from "../revisited/TodosReducer";
-import todosList from "../todos.json";
+// import todosList from "../todos.json";
 
 function TodoItem(props) {
   const dispatch = useContext(TodosDispatch);
@@ -12,11 +11,15 @@ function TodoItem(props) {
           className="toggle"
           type="checkbox"
           checked={props.completed}
-          onChange={(event) => dispatch({ type: TOGGLE_COMPLETE })}
+          onChange={(event) =>
+            dispatch({ type: "TOGGLE_COMPLETE", todoId: props.id })
+          }
         />
-        <label>{props.todosList}</label>
+        <label>{props.title}</label>
         <button
-          onClick={(event) => dispatch({ type: DELETE_TODO })}
+          onClick={(event) =>
+            dispatch({ type: "DELETE_TODO", todoId: props.id })
+          }
           className="destroy"
         />
       </div>
