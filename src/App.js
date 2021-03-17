@@ -2,7 +2,6 @@ import "./App.css";
 import { useEffect, useReducer, createContext } from "react";
 import todosList from "./todos.json";
 import { Route, Switch } from "react-router";
-import { v4 as uuidv4 } from "uuid";
 
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
@@ -28,9 +27,6 @@ import todosReducer from "./revisited/TodosReducer";
 export const TodosDispatch = createContext(null);
 
 const App = (props) => {
-  // const [todos, setTodos] = useState(todosList);
-  // const [userInput, setUserInput] = useState("");
-
   const [state, dispatch] = useReducer(todosReducer, {
     todos: todosList,
     userInput: "",
@@ -50,24 +46,6 @@ const App = (props) => {
     }
   };
 
-  // const handleOnChange = (e) => {
-  //   // let inputText = setTodos;
-  //   // inputText = e.target.value;
-  //   // setTodos(inputText);
-  //   e.preventDefault();
-  //   dispatch({
-  //     type: "ADD_TODO",
-  //   });
-  //   dispatch({ type: HANDLE_CHANGE });
-  // };
-
-  // const clearCompleted = () => {
-  //   dispatch((todos) => {
-  //     return todos.filter((todo) => {
-  //       return !todo.completed;
-  //     });
-  //   });
-  // };
   return (
     <section className="todoapp">
       <TodosDispatch.Provider value={dispatch}>
@@ -83,19 +61,6 @@ const App = (props) => {
             autoFocus
           />
         </header>
-
-        {/* {function reducer(state, action) {
-          switch (action.type) {
-            case "SHOW_ALL":
-              return "ALL";
-            case "SHOW_ACTIVE":
-              return "ACTIVE";
-            case "SHOW_COMPLETED":
-              return "COMPLETED";
-            default:
-              throw new Error();
-          }
-        }} */}
 
         <Switch>
           <Route exact path="/active">

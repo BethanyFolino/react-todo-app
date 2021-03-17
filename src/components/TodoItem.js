@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { TodosDispatch } from "../App";
-// import todosList from "../todos.json";
 
 function TodoItem(props) {
   const dispatch = useContext(TodosDispatch);
